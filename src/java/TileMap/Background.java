@@ -38,6 +38,9 @@ public class Background {
     }
 
     public void update() {
+        setPosition(x, y);
+        x+=dx;
+        y+=dy;
     }
 
     public void draw(Graphics2D g) {
