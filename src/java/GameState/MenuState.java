@@ -24,12 +24,12 @@ public class MenuState extends GameState {
     public MenuState(GameStateManager gameStateManager) {
         gsm = gameStateManager;
 
-        bg = new Background("/Backgrounds/menu3.jpg", 1);
+        bg = new Background("/Backgrounds/menu4.jpg", 1);
         bg.setVector(0, 1);
 
-        titleColor = new Color(70,70,200);
+        titleColor = new Color(180,150,100);
         titleFont = new Font("Century Gothic", Font.BOLD, 50);
-        fontColor = new Color(70,70,200);
+        fontColor = new Color(80,70,100);
         font = new Font("Arial", Font.BOLD, 40);
     }
 
@@ -54,7 +54,7 @@ public class MenuState extends GameState {
         g.setFont(font);
         for (int i = 0; i < options.length; i++) {
             if (i == currentChoice) {
-                g.setColor(Color.BLUE);
+                g.setColor(Color.RED);
             }
             else {
                 g.setColor(fontColor);

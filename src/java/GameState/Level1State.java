@@ -59,6 +59,7 @@ public class Level1State extends GameState {
         Font stringFont = new Font("Arial", Font.BOLD, 20);
         g.setFont(stringFont);
         g.drawString("bullets: " + bullets.size(), 40, 40);
+
     }
 
     @Override

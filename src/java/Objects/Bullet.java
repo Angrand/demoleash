@@ -7,6 +7,7 @@ import java.awt.*;
 public class Bullet extends GameObject {
     private Color bulletColor = new Color(100, 10, 255);
     private int bulletR = 4;
+    private Shape bulletPoly;
 
     public Bullet(int object_X, int object_Y, int objectsXSpeed, int objectsYSpeed) {
         super(object_X, object_Y, objectsXSpeed, objectsYSpeed);
@@ -31,14 +32,14 @@ public class Bullet extends GameObject {
 
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(bulletColor);
-        g. fillPolygon(new int[] {getObjectsX() - bulletR, getObjectsX(), getObjectsX() + bulletR},
+        bulletPoly = new Polygon(new int[] {getObjectsX() - bulletR, getObjectsX(), getObjectsX() + bulletR},
                 new int[] {getObjectsY(), getObjectsY() - bulletR * 2, getObjectsY()}, 3);
+        g.setColor(bulletColor);
+        g.fill(bulletPoly);
 
         g.setStroke(new BasicStroke(3));
         g.setColor(bulletColor.darker());
-        g. drawPolygon(new int[] {getObjectsX() - bulletR, getObjectsX(), getObjectsX() + bulletR},
-                new int[] {getObjectsY(), getObjectsY() - bulletR * 2, getObjectsY()}, 3);
+        g. draw(bulletPoly);
 
         g.setStroke(new BasicStroke(1));
     }
