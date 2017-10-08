@@ -14,7 +14,11 @@ import java.util.List;
 
 public class Level1State extends GameState {
 
-    boolean firing;
+    boolean firingLeft;
+    boolean firingRight;
+    boolean firingUp;
+    boolean firingDown;
+
     long firingDelay = 80_000_000;
     long startFiring = 0;
     long startUpdate = 0;
@@ -34,16 +38,34 @@ public class Level1State extends GameState {
         bg = new Background("/Backgrounds/level1bg2.jpg", 1);
         bg.setVector(0,1);
         myPlayer = new Player(800, 800, 5, 5);
-        firing = false;
+        firingLeft = false;
+        firingRight = false;
+        firingDown = false;
+        firingUp = false;
     }
 
     @Override
     public void update() {
         startUpdate = System.nanoTime();
-        if (firing && startUpdate - startFiring > firingDelay) {
+        if (firingLeft && startUpdate - startFiring > firingDelay) {
+            startFiring = System.nanoTime();
+            bullets.add(new Bullet(myPlayer.getObjectsX(),
+                    myPlayer.getObjectsY() + myPlayer.getPlayerR()/2 + 5, 8, 0, -90));
+        }
+        if (firingRight && startUpdate - startFiring > firingDelay) {
+            startFiring = System.nanoTime();
+            bullets.add(new Bullet(myPlayer.getObjectsX() + myPlayer.getPlayerR(),
+                    myPlayer.getObjectsY() + myPlayer.getPlayerR()/2 + 5, -8, 0, 90));
+        }
+        if (firingUp && startUpdate - startFiring > firingDelay) {
             startFiring = System.nanoTime();
             bullets.add(new Bullet(myPlayer.getObjectsX() + myPlayer.getPlayerR()/2,
-                    myPlayer.getObjectsY(), 0, 8));
+                    myPlayer.getObjectsY(), 0, 8, 0));
+        }
+        if (firingDown && startUpdate - startFiring > firingDelay) {
+            startFiring = System.nanoTime();
+            bullets.add(new Bullet(myPlayer.getObjectsX() + myPlayer.getPlayerR()/2,
+                    myPlayer.getObjectsY() + myPlayer.getPlayerR() + 5, 0, -8, -180));
         }
         bg.update();
         myPlayer.update();
@@ -68,17 +90,36 @@ public class Level1State extends GameState {
             System.exit(0);
         }
 
-        if (k == KeyEvent.VK_CONTROL) {
-            firing = true;
+        if (k == KeyEvent.VK_A) {
+            firingLeft = true;
+        }
+        if (k == KeyEvent.VK_W) {
+            firingUp = true;
+        }
+        if (k == KeyEvent.VK_D) {
+            firingRight = true;
+        }
+        if (k == KeyEvent.VK_S) {
+            firingDown = true;
         }
         myPlayer.keyPressed(k);
     }
 
     @Override
     public void keyReleased(int k) {
-        if (k == KeyEvent.VK_CONTROL) {
-            firing = false;
+        if (k == KeyEvent.VK_A) {
+            firingLeft = false;
         }
+        if (k == KeyEvent.VK_W) {
+            firingUp = false;
+        }
+        if (k == KeyEvent.VK_D) {
+            firingRight = false;
+        }
+        if (k == KeyEvent.VK_S) {
+            firingDown = false;
+        }
+
         myPlayer.keyReleased(k);
     }
 
