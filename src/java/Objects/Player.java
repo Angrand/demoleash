@@ -1,5 +1,6 @@
 package Objects;
 
+import Main.Main;
 import Main.MainBoard;
 import org.omg.CORBA.PRIVATE_MEMBER;
 
@@ -14,6 +15,7 @@ public class Player extends GameObject{
     private boolean isRight;
     private boolean isUp;
     private boolean isDown;
+    private int degrees = 45;
 
 
     private Color insideColor = new Color(100,100,200);
@@ -49,14 +51,21 @@ public class Player extends GameObject{
 
     @Override
     public void draw(Graphics2D g) {
-
+        Shape rect = new Rectangle(getObjectsX(), getObjectsY(), playerR, playerR);
+        g.rotate(Math.toRadians(degrees), getObjectsX() + playerR/2, getObjectsY() + playerR/2);
         g.setColor(insideColor);
-        g.fillRect(getObjectsX(), getObjectsY(), playerR, playerR);
-        g.setStroke(new BasicStroke(3));
+        g.fill(rect);
+        g.setStroke(new BasicStroke(6));
         g.setColor(insideColor.darker());
-        g.drawRect(getObjectsX(), getObjectsY(), playerR, playerR);
+        g.draw(rect);
         g.setStroke(new BasicStroke(1));
+        g.rotate(Math.toRadians(-degrees), getObjectsX() + playerR/2, getObjectsY() + playerR/2);
+        degrees -= 2;
 
+    }
+
+    public int getPlayerR() {
+        return playerR;
     }
 
     public void setLeft(boolean left) {
