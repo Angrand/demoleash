@@ -1,8 +1,6 @@
 package GameState;
 
 import LevelMaps.Background;
-import LevelMaps.LevelMap;
-import Main.MainBoard;
 import Objects.Bullet;
 import Objects.Player;
 
@@ -14,18 +12,20 @@ import java.util.List;
 
 public class Level1State extends GameState {
 
-    boolean firingLeft;
-    boolean firingRight;
-    boolean firingUp;
-    boolean firingDown;
+    private boolean firingLeft;
+    private boolean firingRight;
+    private boolean firingUp;
+    private boolean firingDown;
 
-    long firingDelay = 80_000_000;
-    long startFiring = 0;
-    long startUpdate = 0;
+    private final long FIRING_DELAY = 80_000_000;
+    private long startFiring;
+    private long startUpdate;
 
-    Player myPlayer;
-    Background bg;
-    ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+    private Player myPlayer;
+    private Background bg;
+    private ArrayList<Bullet> bullets;
+
+    private Font stringFont = new Font("Arial", Font.BOLD, 20);
 
 
     public Level1State(GameStateManager gameStateManager) {
@@ -35,38 +35,53 @@ public class Level1State extends GameState {
 
     @Override
     public void init() {
-        bg = new Background("/Backgrounds/level1bg2.jpg", 1);
-        bg.setVector(0,1);
+        bg = new Background("/Backgrounds/level1bg2.jpg", 1, 0, 1);
         myPlayer = new Player(800, 800, 5, 5);
+        bullets = new ArrayList<>();
         firingLeft = false;
         firingRight = false;
         firingDown = false;
         firingUp = false;
+        startUpdate = 0;
+        startFiring = 0;
     }
 
     @Override
     public void update() {
         startUpdate = System.nanoTime();
-        if (firingLeft && startUpdate - startFiring > firingDelay) {
+
+        /*-----------Firing-------*/
+
+        if (firingLeft && startUpdate - startFiring > FIRING_DELAY) {
             startFiring = System.nanoTime();
             bullets.add(new Bullet(myPlayer.getObjectsX(),
-                    myPlayer.getObjectsY() + myPlayer.getPlayerR()/2 + 5, 8, 0, -90));
+                    myPlayer.getObjectsY() + myPlayer.getPlayerR() / 2 + 5,
+                    -8, 0,
+                    -90));
         }
-        if (firingRight && startUpdate - startFiring > firingDelay) {
+        if (firingRight && startUpdate - startFiring > FIRING_DELAY) {
             startFiring = System.nanoTime();
             bullets.add(new Bullet(myPlayer.getObjectsX() + myPlayer.getPlayerR(),
-                    myPlayer.getObjectsY() + myPlayer.getPlayerR()/2 + 5, -8, 0, 90));
+                    myPlayer.getObjectsY() + myPlayer.getPlayerR() / 2 + 5,
+                    8, 0,
+                    90));
         }
-        if (firingUp && startUpdate - startFiring > firingDelay) {
+        if (firingUp && startUpdate - startFiring > FIRING_DELAY) {
             startFiring = System.nanoTime();
-            bullets.add(new Bullet(myPlayer.getObjectsX() + myPlayer.getPlayerR()/2,
-                    myPlayer.getObjectsY(), 0, 8, 0));
+            bullets.add(new Bullet(myPlayer.getObjectsX() + myPlayer.getPlayerR() / 2,
+                    myPlayer.getObjectsY(),
+                    0, -8,
+                    0));
         }
-        if (firingDown && startUpdate - startFiring > firingDelay) {
+        if (firingDown && startUpdate - startFiring > FIRING_DELAY) {
             startFiring = System.nanoTime();
-            bullets.add(new Bullet(myPlayer.getObjectsX() + myPlayer.getPlayerR()/2,
-                    myPlayer.getObjectsY() + myPlayer.getPlayerR() + 5, 0, -8, -180));
+            bullets.add(new Bullet(myPlayer.getObjectsX() + myPlayer.getPlayerR() / 2,
+                    myPlayer.getObjectsY() + myPlayer.getPlayerR() + 5,
+                    0, 8,
+                    -180));
         }
+        /*------------------------*/
+
         bg.update();
         myPlayer.update();
         update(bullets);
@@ -77,11 +92,16 @@ public class Level1State extends GameState {
         bg.draw(g);
         myPlayer.draw(g);
         draw(bullets, g);
+
+
+
+        /* String to print-----*/
+
         g.setColor(Color.BLACK);
-        Font stringFont = new Font("Arial", Font.BOLD, 20);
         g.setFont(stringFont);
         g.drawString("bullets: " + bullets.size(), 40, 40);
 
+        /*---------------------*/
     }
 
     @Override
@@ -124,7 +144,7 @@ public class Level1State extends GameState {
     }
 
     private void update(List<Bullet> bullets) {
-        for (int i = 0; i<bullets.size(); i++) {
+        for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).update();
             if (!bullets.get(i).isInside()) {
                 bullets.remove(i);
@@ -134,7 +154,7 @@ public class Level1State extends GameState {
     }
 
     private void draw(List<Bullet> bullets, Graphics2D g) {
-        for (Bullet bullet: bullets) {
+        for (Bullet bullet : bullets) {
             bullet.draw(g);
         }
     }

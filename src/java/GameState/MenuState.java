@@ -23,18 +23,18 @@ public class MenuState extends GameState {
 
     public MenuState(GameStateManager gameStateManager) {
         gsm = gameStateManager;
+        init();
 
-        bg = new Background("/Backgrounds/menu4.jpg", 1);
-        bg.setVector(0, 1);
-
-        titleColor = new Color(180,150,100);
-        titleFont = new Font("Century Gothic", Font.BOLD, 50);
-        fontColor = new Color(80,70,100);
-        font = new Font("Arial", Font.BOLD, 40);
     }
 
     @Override
     public void init() {
+        bg = new Background("/Backgrounds/menu4.jpg", 1, 0, 1);
+
+        titleColor = new Color(180, 150, 100);
+        titleFont = new Font("Century Gothic", Font.BOLD, 50);
+        fontColor = new Color(80, 70, 100);
+        font = new Font("Arial", Font.BOLD, 40);
 
     }
 
@@ -55,26 +55,25 @@ public class MenuState extends GameState {
         for (int i = 0; i < options.length; i++) {
             if (i == currentChoice) {
                 g.setColor(Color.RED);
-            }
-            else {
+            } else {
                 g.setColor(fontColor);
             }
-            g.drawString(options[i], 745, 250+i*40);
+            g.drawString(options[i], 745, 250 + i * 40);
         }
     }
 
     @Override
     public void keyPressed(int k) {
-        if(k== KeyEvent.VK_ENTER) {
+        if (k == KeyEvent.VK_ENTER) {
             select();
         }
-        if(k== KeyEvent.VK_UP) {
+        if (k == KeyEvent.VK_UP) {
             currentChoice--;
             if (currentChoice == -1) {
                 currentChoice = options.length - 1;
             }
         }
-        if(k== KeyEvent.VK_DOWN) {
+        if (k == KeyEvent.VK_DOWN) {
             currentChoice++;
             if (currentChoice == options.length) {
                 currentChoice = 0;

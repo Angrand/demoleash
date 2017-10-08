@@ -9,7 +9,7 @@ public class Main {
         JFrame myFrame = new JFrame("DemoLeash");
         myFrame.setContentPane(new MainBoard());
 
-        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         myFrame.setResizable(false);
         myFrame.pack();
         myFrame.setVisible(true);

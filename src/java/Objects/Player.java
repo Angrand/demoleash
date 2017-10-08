@@ -1,13 +1,10 @@
 package Objects;
 
-import Main.Main;
-import Main.MainBoard;
-import org.omg.CORBA.PRIVATE_MEMBER;
 
+import Main.MainBoard;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
+
 
 public class Player extends GameObject{
     private int playerR = 30;
@@ -17,8 +14,6 @@ public class Player extends GameObject{
     private boolean isDown;
     private int degrees = 45;
     private Shape collRectangle;
-
-
     private Color insideColor = new Color(100,100,200);
 
 
@@ -28,6 +23,7 @@ public class Player extends GameObject{
 
     @Override
     public void update() {
+        /* Moving----------*/
         if (isLeft) {
             if (getObjectsX() > 0) {
                 setObjectsX(getObjectsX() - getObjectsXSpeed());
@@ -48,6 +44,7 @@ public class Player extends GameObject{
                 setObjectsY(getObjectsY() + getObjectsYSpeed());
             }
         }
+        /*-----------------*/
         collRectangle = new Rectangle((int) (getObjectsX()-0.3*playerR+3), (int) (getObjectsY() - 0.3*playerR+3),
                 (int)(1.4*playerR), (int) (1.4*playerR));
     }
@@ -58,8 +55,8 @@ public class Player extends GameObject{
         g.fill(collRectangle);
 
         Shape rect = new Rectangle(getObjectsX(), getObjectsY(), playerR, playerR);
-        /** rotate here */
-        g.rotate(Math.toRadians(degrees), getObjectsX() + playerR/2, getObjectsY() + playerR/2);
+        /* rotate here---*/
+        g.rotate(Math.toRadians(degrees), getObjectsX() + playerR / 2, getObjectsY() + playerR / 2);
         g.setColor(insideColor);
         g.fill(rect);
         g.setStroke(new BasicStroke(6));
@@ -67,7 +64,8 @@ public class Player extends GameObject{
         g.draw(rect);
         g.setStroke(new BasicStroke(1));
         g.rotate(Math.toRadians(-degrees), getObjectsX() + playerR/2, getObjectsY() + playerR/2);
-        //------------------------------
+        /*---------------*/
+
         degrees -= 2;
 
     }

@@ -17,8 +17,8 @@ public class Bullet extends GameObject {
 
     @Override
     public void update() {
-        setObjectsX(getObjectsX() - getObjectsXSpeed());
-        setObjectsY(getObjectsY() - getObjectsYSpeed());
+        setObjectsX(getObjectsX() + getObjectsXSpeed());
+        setObjectsY(getObjectsY() + getObjectsYSpeed());
     }
 
     public boolean isInside() {
@@ -34,8 +34,8 @@ public class Bullet extends GameObject {
 
     @Override
     public void draw(Graphics2D g) {
-        bulletPoly = new Polygon(new int[] {getObjectsX() - bulletR, getObjectsX(), getObjectsX() + bulletR},
-                new int[] {getObjectsY(), getObjectsY() - bulletR * 2, getObjectsY()}, 3);
+        bulletPoly = new Polygon(new int[]{getObjectsX() - bulletR, getObjectsX(), getObjectsX() + bulletR},
+                new int[]{getObjectsY(), getObjectsY() - bulletR * 2, getObjectsY()}, 3);
 
         g.rotate(Math.toRadians(rotation), getObjectsX(), getObjectsY() - bulletR);
         g.setColor(bulletColor);
@@ -43,7 +43,7 @@ public class Bullet extends GameObject {
 
         g.setStroke(new BasicStroke(3));
         g.setColor(bulletColor.darker());
-        g. draw(bulletPoly);
+        g.draw(bulletPoly);
         g.rotate(Math.toRadians(-rotation), getObjectsX(), getObjectsY() - bulletR);
 
         g.setStroke(new BasicStroke(1));

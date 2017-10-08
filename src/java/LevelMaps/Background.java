@@ -18,7 +18,9 @@ public class Background {
 
     private double moveScale;
 
-    public Background(String s, double moveScale) {
+    public Background(String s, double moveScale, double dx, double dy) {
+        speed_dx = dx;
+        speed_dy = dy;
         try {
             image = ImageIO.read(getClass().getResourceAsStream(s));
             this.moveScale = moveScale;
@@ -32,15 +34,10 @@ public class Background {
         this.y = (y * moveScale) % MainBoard.BOARD_HEIGHT;
     }
 
-    public void setVector(double dx, double dy) {
-        this.speed_dx = dx;
-        this.speed_dy = dy;
-    }
-
     public void update() {
         setPosition(x, y);
-        x+= speed_dx;
-        y+= speed_dy;
+        x += speed_dx;
+        y += speed_dy;
     }
 
     public void draw(Graphics2D g) {

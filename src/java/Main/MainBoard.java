@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 
 public class MainBoard extends JPanel implements Runnable, KeyListener {
 
-    /**
+    /*
      * DIMENSIONS
      */
     public static final int BOARD_WIDTH = 1600;
@@ -22,31 +22,31 @@ public class MainBoard extends JPanel implements Runnable, KeyListener {
     private int FPS = 60;
     private long targetTime = 1000 / FPS;
 
-    /**
+    /*
      * IMAGE fields
      */
     private BufferedImage myImage;
     private Graphics2D g;
 
-    /**
+    /*
      * Game State Manager
      */
     private GameStateManager gsm;
 
 
-    /**
+    /*
      * Constructor
      */
-    public MainBoard() throws HeadlessException {
+    MainBoard() throws HeadlessException {
         super();
         setPreferredSize(new Dimension(BOARD_WIDTH * BOARD_SCALE, BOARD_HEIGHT * BOARD_SCALE));
         setFocusable(true);
         requestFocus();
     }
 
-    /**
+    /*
      * FUNCTIONS
-     * запускается вначале
+     * addNotify comes at start, new Thread.
      */
     @Override
     public void addNotify() {
@@ -58,7 +58,7 @@ public class MainBoard extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    /**
+    /*
      * RUN
      */
     @Override
@@ -70,7 +70,7 @@ public class MainBoard extends JPanel implements Runnable, KeyListener {
         long elapsedTime;
         long waitTime;
 
-        /**GAME LOOP*/
+        /*--GAME LOOP------*/
         while (isRunning) {
             startTime = System.nanoTime();
 
@@ -89,23 +89,25 @@ public class MainBoard extends JPanel implements Runnable, KeyListener {
                 }
             }
         }
+        /*------------------*/
     }
 
     private void init() {
+        gsm = new GameStateManager();
+
         myImage = new BufferedImage(BOARD_WIDTH, BOARD_HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) myImage.getGraphics();
         isRunning = true;
 
-        gsm = new GameStateManager();
     }
 
     private void mainBoardUpdate() {
-        /** gamesStateManager update*/
+        /* gamesStateManager update*/
         gsm.update();
     }
 
     private void mainBoardRender() {
-        /** gamesStateManager draw*/
+        /* gamesStateManager draw*/
         gsm.draw(g);
     }
 
