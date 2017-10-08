@@ -7,24 +7,23 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.util.Scanner;
 
 public class MainBoard extends JPanel implements Runnable, KeyListener {
 
     /**
      * DIMENSIONS
      */
-    public static final int WIDTH = 320;
-    public static final int HEIGHT = 240;
-    public static final int SCALE = 2;
+    public static final int BOARD_WIDTH = 1600;
+    public static final int BOARD_HEIGHT = 900;
+    public static final int BOARD_SCALE = 1;
 
-    private Thread thread;
-    private boolean ifRunning;
+    private Thread animator;
+    private boolean isRunning;
     private int FPS = 60;
     private long targetTime = 1000 / FPS;
 
     /**
-     * IMAGE
+     * IMAGE fields
      */
     private BufferedImage myImage;
     private Graphics2D g;
@@ -35,28 +34,27 @@ public class MainBoard extends JPanel implements Runnable, KeyListener {
     private GameStateManager gsm;
 
 
-    private double avgFPS;
-
     /**
      * Constructor
      */
     public MainBoard() throws HeadlessException {
         super();
-        setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        setPreferredSize(new Dimension(BOARD_WIDTH * BOARD_SCALE, BOARD_HEIGHT * BOARD_SCALE));
         setFocusable(true);
         requestFocus();
     }
 
     /**
      * FUNCTIONS
+     * запускается вначале
      */
     @Override
     public void addNotify() {
         super.addNotify();
-        if (thread == null) {
-            thread = new Thread(this);
+        if (animator == null) {
+            animator = new Thread(this);
             addKeyListener(this);
-            thread.start();
+            animator.start();
         }
     }
 
@@ -73,7 +71,7 @@ public class MainBoard extends JPanel implements Runnable, KeyListener {
         long waitTime;
 
         /**GAME LOOP*/
-        while (ifRunning) {
+        while (isRunning) {
             startTime = System.nanoTime();
 
             mainBoardUpdate();
@@ -94,25 +92,27 @@ public class MainBoard extends JPanel implements Runnable, KeyListener {
     }
 
     private void init() {
-        myImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        myImage = new BufferedImage(BOARD_WIDTH, BOARD_HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) myImage.getGraphics();
-        ifRunning = true;
+        isRunning = true;
 
         gsm = new GameStateManager();
     }
 
     private void mainBoardUpdate() {
+        /** gamesStateManager update*/
         gsm.update();
     }
 
     private void mainBoardRender() {
+        /** gamesStateManager draw*/
         gsm.draw(g);
     }
 
     private void mainBoardDrawToScreen() {
         Graphics g2 = getGraphics();
         g2.drawImage(myImage, 0, 0,
-                WIDTH * SCALE, HEIGHT * SCALE,
+                BOARD_WIDTH * BOARD_SCALE, BOARD_HEIGHT * BOARD_SCALE,
                 null);
         g2.dispose();
     }

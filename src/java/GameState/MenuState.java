@@ -1,6 +1,6 @@
 package GameState;
 
-import TileMap.Background;
+import LevelMaps.Background;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -18,18 +18,19 @@ public class MenuState extends GameState {
 
     private Color titleColor;
     private Font titleFont;
-
+    private Color fontColor;
     private Font font;
 
     public MenuState(GameStateManager gameStateManager) {
         gsm = gameStateManager;
 
-        bg = new Background("/Backgrounds/menubg.jpg", 1);
-        bg.setVector(-1, 0);
+        bg = new Background("/Backgrounds/menu3.jpg", 1);
+        bg.setVector(0, 1);
 
-        titleColor = new Color(128, 0, 0);
-        titleFont = new Font("Century Gothic", Font.PLAIN, 28);
-        font = new Font("Arial", Font.PLAIN, 12);
+        titleColor = new Color(70,70,200);
+        titleFont = new Font("Century Gothic", Font.BOLD, 50);
+        fontColor = new Color(70,70,200);
+        font = new Font("Arial", Font.BOLD, 40);
     }
 
     @Override
@@ -48,17 +49,17 @@ public class MenuState extends GameState {
 
         g.setColor(titleColor);
         g.setFont(titleFont);
-        g.drawString("DemoLeash", 80, 70);
+        g.drawString("DemoLeash", 700, 200);
 
         g.setFont(font);
         for (int i = 0; i < options.length; i++) {
             if (i == currentChoice) {
-                g.setColor(Color.BLACK);
+                g.setColor(Color.BLUE);
             }
             else {
-                g.setColor(Color.RED);
+                g.setColor(fontColor);
             }
-            g.drawString(options[i], 145, 140+i*40);
+            g.drawString(options[i], 745, 250+i*40);
         }
     }
 
@@ -85,11 +86,13 @@ public class MenuState extends GameState {
     private void select() {
         if (currentChoice == 0) {
             //start
+            gsm.setState(GameStateManager.LEVEL1STATE);
         }
         if (currentChoice == 1) {
             //help
         }
         if (currentChoice == 2) {
+            //exit
             System.exit(0);
         }
     }

@@ -1,0 +1,107 @@
+package Objects;
+
+import Main.MainBoard;
+import org.omg.CORBA.PRIVATE_MEMBER;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+
+public class Player extends GameObject{
+    private int playerR = 30;
+    private boolean isLeft;
+    private boolean isRight;
+    private boolean isUp;
+    private boolean isDown;
+
+
+    private Color insideColor = new Color(100,100,200);
+
+
+    public Player(int player_X, int player_Y, int playerXSpeed, int playerYSpeed) {
+        super(player_X, player_Y, playerXSpeed, playerYSpeed);
+    }
+
+    @Override
+    public void update() {
+        if (isLeft) {
+            if (getObjectsX() > 0) {
+                setObjectsX(getObjectsX() - getObjectsXSpeed());
+            }
+        }
+        if (isRight) {
+            if (getObjectsX() < MainBoard.BOARD_WIDTH - playerR) {
+                setObjectsX(getObjectsX() + getObjectsXSpeed());
+            }
+        }
+        if (isUp) {
+            if (getObjectsY() > 0) {
+                setObjectsY(getObjectsY() - getObjectsYSpeed());
+            }
+        }
+        if (isDown) {
+            if (getObjectsY() < MainBoard.BOARD_HEIGHT - playerR) {
+                setObjectsY(getObjectsY() + getObjectsYSpeed());
+            }
+        }
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+
+        g.setColor(insideColor);
+        g.fillRect(getObjectsX(), getObjectsY(), playerR, playerR);
+        g.setStroke(new BasicStroke(3));
+        g.setColor(insideColor.darker());
+        g.drawRect(getObjectsX(), getObjectsY(), playerR, playerR);
+        g.setStroke(new BasicStroke(1));
+
+    }
+
+    public void setLeft(boolean left) {
+        isLeft = left;
+    }
+
+    public void setRight(boolean right) {
+        isRight = right;
+    }
+
+    public void setUp(boolean up) {
+        isUp = up;
+    }
+
+    public void setDown(boolean down) {
+        isDown = down;
+    }
+
+    public void keyPressed(int k) {
+        if (k == KeyEvent.VK_LEFT) {
+            setLeft(true);
+        }
+        if (k == KeyEvent.VK_RIGHT) {
+            setRight(true);
+        }
+        if (k == KeyEvent.VK_UP) {
+            setUp(true);
+        }
+        if (k == KeyEvent.VK_DOWN) {
+            setDown(true);
+        }
+    }
+
+    public void keyReleased(int k) {
+        if (k == KeyEvent.VK_LEFT) {
+            setLeft(false);
+        }
+        if (k == KeyEvent.VK_RIGHT) {
+            setRight(false);
+        }
+        if (k == KeyEvent.VK_UP) {
+            setUp(false);
+        }
+        if (k == KeyEvent.VK_DOWN) {
+            setDown(false);
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package TileMap;
+package LevelMaps;
 
 import Main.MainBoard;
 
@@ -13,43 +13,49 @@ public class Background {
 
     private double x;
     private double y;
-    private double dx;
-    private double dy;
+    private double speed_dx;
+    private double speed_dy;
 
     private double moveScale;
 
-    public Background(String s, double ms) {
+    public Background(String s, double moveScale) {
         try {
             image = ImageIO.read(getClass().getResourceAsStream(s));
-            moveScale = ms;
+            this.moveScale = moveScale;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void setPosition(double x, double y) {
-        this.x = (x * moveScale) % MainBoard.WIDTH;
-        this.y = (y * moveScale) % MainBoard.HEIGHT;
+        this.x = (x * moveScale) % MainBoard.BOARD_WIDTH;
+        this.y = (y * moveScale) % MainBoard.BOARD_HEIGHT;
     }
 
     public void setVector(double dx, double dy) {
-        this.dx = dx;
-        this.dy = dy;
+        this.speed_dx = dx;
+        this.speed_dy = dy;
     }
 
     public void update() {
         setPosition(x, y);
-        x+=dx;
-        y+=dy;
+        x+= speed_dx;
+        y+= speed_dy;
     }
 
     public void draw(Graphics2D g) {
         g.drawImage(image, (int) x, (int) y, null);
         if (x < 0) {
-            g.drawImage(image, (int) x + MainBoard.WIDTH, (int) y, null);
+            g.drawImage(image, (int) x + MainBoard.BOARD_WIDTH, (int) y, null);
         }
         if (x > 0) {
-            g.drawImage(image, (int) x - MainBoard.WIDTH, (int) y, null);
+            g.drawImage(image, (int) x - MainBoard.BOARD_WIDTH, (int) y, null);
+        }
+        if (y < 0) {
+            g.drawImage(image, (int) x, (int) y + MainBoard.BOARD_HEIGHT, null);
+        }
+        if (y > 0) {
+            g.drawImage(image, (int) x, (int) y - MainBoard.BOARD_HEIGHT, null);
         }
     }
 }
